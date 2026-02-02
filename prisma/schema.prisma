@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url = "file:./dev.db"
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PageContent {
+  id        String   @id @default(cuid())
+  page      String   // 'home', 'about', 'contacts'
+  section   String   // section identifier
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([page, section])
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String   // hashed password
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id                 String   @id @default(cuid())
+  name               String
+  email              String
+  projectDescription String
+  budget             String
+  status             String   @default("pending") // 'pending', 'completed', 'cancelled'
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
